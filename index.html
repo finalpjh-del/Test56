@@ -3,78 +3,62 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>경찰 양성 게임</title>
+<title>경찰 양성 v0.30</title>
+<link rel="preload" href="./app.js?v=0.30" as="script">
 <style>
-  :root{
-    --bg1:#0b1020; --bg2:#111633;
-    --acc1:#ff9966; --acc2:#ff5e62;
-    --paper:#141a2e; --ink:#e8ecff;
-    --muted:#a8b3d9; --glass:rgba(255,255,255,.06);
-  }
+  :root{--bg1:#0b1220;--bg2:#15213b;--pri:#65b7ff;--accent:#ffd166}
   *{box-sizing:border-box}
   html,body{height:100%}
-  body{
-    margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-    color:var(--ink);
-    background:
-      radial-gradient(1200px 800px at 10% -10%, #2c315a 0%, transparent 60%),
-      radial-gradient(1200px 800px at 110% 0%, #2a2149 0%, transparent 60%),
-      linear-gradient(180deg, var(--bg1), var(--bg2));
-    display:flex; align-items:center; justify-content:center;
-  }
-  .wrap{width:min(1100px,94vw); padding:28px}
-  .hero{display:grid; grid-template-columns:1.1fr .9fr; gap:20px; align-items:stretch;}
-  @media (max-width:900px){ .hero{grid-template-columns:1fr;} }
-  .glass{background:var(--glass); border:1px solid rgba(255,255,255,.12); border-radius:18px; padding:22px; box-shadow:0 10px 40px rgba(0,0,0,.35);}
-  h1{margin:0 0 6px; font-size:clamp(28px,5vw,40px)}
-  .lede{margin:0 0 10px; color:var(--muted)}
-  .cta{display:flex; flex-wrap:wrap; gap:10px; margin-top:14px}
-  a.btn,.btn{display:inline-flex; align-items:center; gap:10px; padding:14px 18px; border-radius:14px; font-weight:800; text-decoration:none; border:0; cursor:pointer; color:#fff; background:linear-gradient(90deg,var(--acc1),var(--acc2)); box-shadow:0 10px 28px rgba(255,120,90,.25);}
-  .btn:hover{transform:translateY(-1px); filter:brightness(1.05)}
-  .tips-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
-  .tips-body{display:none; margin-top:8px}
-  ul{margin:6px 0 0 18px}
-  .footer{position:fixed; left:0; right:0; bottom:10px; display:flex; justify-content:center; pointer-events:none;}
-  .ver{pointer-events:auto; background:rgba(0,0,0,.4); color:#d8defa; font-weight:800; padding:8px 12px; border-radius:999px; border:1px solid rgba(255,255,255,.12); backdrop-filter: blur(6px);}
+  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#e9f0ff;
+       background:radial-gradient(60% 80% at 50% 20%,#1e2c4d 0%,#0b1220 60%)}
+  .wrap{max-width:900px;margin:0 auto;padding:24px}
+  header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+  h1{margin:0;font-size:1.6rem;letter-spacing:0.03em}
+  .ver{opacity:.8;font-size:.95rem}
+  .grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:16px}
+  .btn{appearance:none;border:0;padding:14px 16px;border-radius:14px;background:#1f2c4a;color:#fff;
+       font-weight:700;letter-spacing:.02em;cursor:pointer;transition:transform .08s ease,opacity .2s}
+  .btn:hover{transform:translateY(-1px)}
+  details{background:#11192b;border-radius:12px;padding:12px}
+  summary{cursor:pointer;font-weight:700}
+  ul{margin:8px 0 0 18px}
+  .foot{margin-top:28px;opacity:.8;font-size:.9rem}
 </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="hero">
-      <div class="glass">
-        <h1>🎲 경찰 양성</h1>
-        <p class="lede">전투로 사건을 제압하고, 연차에 맞춰 <b>승진 도전</b>에 성공하세요.</p>
-        <div class="cta">
-          <a class="btn" href="police_training_game.html?v=0.27">게임 시작</a>
-          <a class="btn" href="honor_memorial.html?v=0.27">명예·추모관</a>
-        </div>
-      </div>
-      <div class="glass">
-        <div class="tips-head">
-          <h3 style="margin:0">📝 게임 팁</h3>
-          <button id="tips-toggle" class="btn" type="button" style="padding:10px 12px;font-size:14px">열기/닫기</button>
-        </div>
-        <div id="tips-body" class="tips-body">
-          <ul>
-            <li>전투(제압) 중 구급함 사용 가능 — <b>턴 소요 + 적만 주사위</b>.</li>
-            <li><b>제압 완료 후</b> 애프터 패널이 열릴 때에만 <b>+4개월 누적</b>.</li>
-            <li>승진 도전은 <b>연차(만 1·2·3년…)</b>에만 가능. 경감/경정은 <b>2년차부터</b>.</li>
-            <li>근속승진: 의경→순경 3년, 순경→경장 4년, 경장→경사 5년, 경사→경위 6년6개월, 경위→경감 8년.</li>
-            <li>순직 시 <b>1계급 특진</b> 및 이력 기록.</li>
-          </ul>
-        </div>
-      </div>
+    <header>
+      <h1>경찰 양성</h1>
+      <div class="ver">v0.30</div>
+    </header>
+
+    <div class="grid">
+      <button class="btn" id="goGame">게임 시작</button>
+      <button class="btn" id="goMemorial">명예·추모관</button>
     </div>
+
+    <details style="margin-top:18px">
+      <summary>게임 팁 (열기/닫기)</summary>
+      <ul>
+        <li>제압(전투) 중 구급함 사용 가능 — <b>턴 소요 + 적만 주사위</b>.</li>
+        <li><b>애프터</b> 패널이 열릴 때마다 +4개월 누적. v0.30부터 <b>턴 종료 시 토스트 안내</b>.</li>
+        <li>승진 도전은 연차(만 1·2·3년…)에만 가능. 경감/경정은 2년차부터.</li>
+        <li>근속승진: 의경→순경 3년, 순경→경장 4년, 경장→경사 5년, 경사→경위 6년6개월, 경위→경감 8년.</li>
+        <li><b>강등 시 근속기간 즉시 초기화</b> 반영(v0.30).</li>
+      </ul>
+    </details>
+
+    <div class="foot">© 2025 Training Police Officers — GitHub Pages</div>
   </div>
-  <div class="footer"><div class="ver">v0.27</div></div>
+
 <script>
-(function(){
-  const btn=document.getElementById('tips-toggle');
-  const body=document.getElementById('tips-body');
-  if(btn&&body){
-    btn.addEventListener('click', ()=>{ body.style.display=(body.style.display==='none'||body.style.display==='')?'block':'none'; });
-  }
-})();
+  // 견고한 내비게이션 (빈 화면/페이지 오류 예방)
+  document.getElementById('goGame').addEventListener('click',()=>{
+    location.href = './police_training_game.html?v=0.30';
+  });
+  document.getElementById('goMemorial').addEventListener('click',()=>{
+    location.href = './honor_memorial.html?v=0.30';
+  });
 </script>
 </body>
 </html>
