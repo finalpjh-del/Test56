@@ -1,1 +1,37 @@
-<!DOCTYPE html><html lang='ko'><head><meta charset='utf-8'><title>명예·추모관 v0.27</title></head><body><h1>명예·추모관 v0.27</h1></body></html>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>명예·추모관 v0.30</title>
+<link rel="preload" href="./app.js?v=0.30" as="script">
+<style>
+  :root{--panel:#0e172a;--ink:#e9f0ff;--mut:#9fb4d4}
+  *{box-sizing:border-box} html,body{height:100%}
+  body{margin:0;background:linear-gradient(180deg,#0b1220,#15213b);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+  .wrap{max-width:1000px;margin:0 auto;padding:18px 16px}
+  h1{margin:0 0 10px 0;font-size:1.3rem}
+  .panel{background:var(--panel);border-radius:14px;padding:14px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+  .card{background:#111a33;border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px}
+  .btn{appearance:none;border:0;padding:8px 10px;border-radius:10px;background:#1f2c4a;color:#fff;font-weight:700;cursor:pointer}
+  .mut{opacity:.8}
+  canvas{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>️명예·추모관 <small class="mut">v0.30</small></h1>
+  <div class="panel">
+    <div class="mut" style="margin-bottom:8px">기록은 로컬 스토리지에 저장됩니다.</div>
+    <div class="grid" id="memGrid"></div>
+  </div>
+  <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+    <a class="btn" href="./index.html?v=0.30">⬅️ 메인</a>
+    <button class="btn" id="btnExportAll">전체 목록 이미지 저장</button>
+  </div>
+</div>
+
+<script src="./app.js?v=0.30"></script>
+</body>
+</html>
