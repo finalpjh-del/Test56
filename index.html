@@ -1,64 +1,25 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>경찰 양성 v0.30</title>
-<link rel="preload" href="./app.js?v=0.30" as="script">
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>경찰 양성 v0.21 (기능패치)</title>
 <style>
-  :root{--bg1:#0b1220;--bg2:#15213b;--pri:#65b7ff;--accent:#ffd166}
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#e9f0ff;
-       background:radial-gradient(60% 80% at 50% 20%,#1e2c4d 0%,#0b1220 60%)}
-  .wrap{max-width:900px;margin:0 auto;padding:24px}
-  header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-  h1{margin:0;font-size:1.6rem;letter-spacing:0.03em}
-  .ver{opacity:.8;font-size:.95rem}
-  .grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:16px}
-  .btn{appearance:none;border:0;padding:14px 16px;border-radius:14px;background:#1f2c4a;color:#fff;
-       font-weight:700;letter-spacing:.02em;cursor:pointer;transition:transform .08s ease,opacity .2s}
-  .btn:hover{transform:translateY(-1px)}
-  details{background:#11192b;border-radius:12px;padding:12px}
-  summary{cursor:pointer;font-weight:700}
-  ul{margin:8px 0 0 18px}
-  .foot{margin-top:28px;opacity:.8;font-size:.9rem}
+  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#0b1220;color:#e9f0ff}
+  .wrap{max-width:900px;margin:0 auto;padding:20px}
+  h1{margin:0 0 10px 0;font-size:1.2rem}
+  .btn{appearance:none;border:0;padding:12px 14px;border-radius:12px;background:#1f2c4a;color:#fff;font-weight:700;cursor:pointer;margin-right:8px}
+  .mut{opacity:.8}
 </style>
 </head>
 <body>
   <div class="wrap">
-    <header>
-      <h1>경찰 양성</h1>
-      <div class="ver">v0.30</div>
-    </header>
-
-    <div class="grid">
-      <button class="btn" id="goGame">게임 시작</button>
-      <button class="btn" id="goMemorial">명예·추모관</button>
-    </div>
-
-    <details style="margin-top:18px">
-      <summary>게임 팁 (열기/닫기)</summary>
-      <ul>
-        <li>제압(전투) 중 구급함 사용 가능 — <b>턴 소요 + 적만 주사위</b>.</li>
-        <li><b>애프터</b> 패널이 열릴 때마다 +4개월 누적. v0.30부터 <b>턴 종료 시 토스트 안내</b>.</li>
-        <li>승진 도전은 연차(만 1·2·3년…)에만 가능. 경감/경정은 2년차부터.</li>
-        <li>근속승진: 의경→순경 3년, 순경→경장 4년, 경장→경사 5년, 경사→경위 6년6개월, 경위→경감 8년.</li>
-        <li><b>강등 시 근속기간 즉시 초기화</b> 반영(v0.30).</li>
-      </ul>
-    </details>
-
-    <div class="foot">© 2025 Training Police Officers — GitHub Pages</div>
+    <h1>경찰 양성 <span class="mut">v0.21 (필요 부분만 패치)</span></h1>
+    <p class="mut">외형/이모티콘/레이아웃은 0.21 유지. 기능만 최소 추가.</p>
+    <p>
+      <a class="btn" href="./police_training_game.html">게임 시작</a>
+      <a class="btn" href="./honor_memorial.html">명예·추모관</a>
+    </p>
   </div>
-
-<script>
-  // 견고한 내비게이션 (빈 화면/페이지 오류 예방)
-  document.getElementById('goGame').addEventListener('click',()=>{
-    location.href = './police_training_game.html?v=0.30';
-  });
-  document.getElementById('goMemorial').addEventListener('click',()=>{
-    location.href = './honor_memorial.html?v=0.30';
-  });
-</script>
 </body>
 </html>

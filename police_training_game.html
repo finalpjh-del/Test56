@@ -3,154 +3,110 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>경찰 양성 - 전투 v0.30</title>
-<link rel="preload" href="./app.js?v=0.30" as="script">
+<title>경찰 양성 - 게임 v0.21 (패치)</title>
 <style>
-  :root{
-    --panel:#0e172a; --panel2:#111a33; --ink:#e9f0ff; --pri:#65b7ff; --ok:#00d1a7; --bad:#ff6b6b; --mut:#9fb4d4;
-    --toast:#1b2441; --overlay:rgba(2,8,23,.65); --flash:#fff59d;
-  }
-  *{box-sizing:border-box} html,body{height:100%}
-  body{margin:0;background:linear-gradient(180deg,#0b1220,#15213b);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
-  .wrap{max-width:1100px;margin:0 auto;padding:18px 16px}
-  h1{margin:0 0 8px 0;font-size:1.2rem}
-  .row{display:grid;grid-template-columns:320px 1fr;gap:14px}
-  .panel{background:var(--panel);border-radius:14px;padding:14px}
-  .panel h2{margin:.2rem 0 .6rem 0;font-size:1rem}
-  .btn{appearance:none;border:0;padding:10px 12px;border-radius:12px;background:#1f2c4a;color:#fff;
-       font-weight:700;cursor:pointer;transition:transform .08s ease,opacity .2s}
-  .btn:disabled{opacity:.4;cursor:not-allowed}
-  .mut{opacity:.8}
+  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#0b1220;color:#e9f0ff}
+  .wrap{max-width:1100px;margin:0 auto;padding:16px}
+  h1{margin:0 0 8px 0;font-size:1.1rem}
+  .row{display:grid;grid-template-columns:320px 1fr;gap:12px}
+  .panel{background:#0e172a;border-radius:12px;padding:12px}
+  .btn{appearance:none;border:0;padding:10px 12px;border-radius:10px;background:#1f2c4a;color:#fff;font-weight:700;cursor:pointer}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
   .chips{display:flex;gap:8px;flex-wrap:wrap}
-  .grid2{display:grid;grid-template-columns:repeat(2,minmax(120px,1fr));gap:8px}
-  .stats{display:flex;gap:8px;flex-wrap:wrap;margin:.4rem 0 .6rem 0}
+  .stats{display:flex;gap:8px;flex-wrap:wrap;margin:.3rem 0}
   .tag{background:#1c2745;padding:6px 8px;border-radius:10px}
-  .toastBox{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);display:flex;flex-direction:column;gap:8px;z-index:9999}
-  .toast{background:var(--toast);padding:10px 14px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,.35);min-width:260px;text-align:center}
-  .overlay{position:fixed;inset:0;background:var(--overlay);display:none;align-items:center;justify-content:center;z-index:9990}
-  .modal{background:var(--panel2);padding:18px;border-radius:14px;max-width:520px;width:calc(100% - 32px)}
-  .closeArea{margin-top:8px;text-align:right}
-  .closeBtn{background:#283357;color:#fff;border:0;border-radius:10px;padding:8px 10px;cursor:pointer}
-  .bar{height:10px;background:#203158;border-radius:999px;overflow:hidden}
-  .bar>span{display:block;height:100%;width:50%;background:linear-gradient(90deg,var(--ok),#7de9c9)}
-  .flash{position:fixed;inset:0;background:var(--flash);opacity:0;pointer-events:none;transition:opacity .2s ease} /* 0.2s로 확장 */
-  .footerBtns{display:flex;gap:8px;flex-wrap:wrap}
-  .tiny{font-size:.85rem;opacity:.8}
+  .grid2{display:grid;grid-template-columns:repeat(2,minmax(120px,1fr));gap:8px}
+  .tiny{font-size:.85rem;opacity:.85}
+  #toastBox{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);display:flex;flex-direction:column;gap:8px;z-index:9999}
+  .toast{background:#1b2441;color:#e9f0ff;padding:10px 14px;border-radius:12px;min-width:220px;text-align:center;box-shadow:0 6px 20px rgba(0,0,0,.35);transition:opacity .25s}
+  #overlay{position:fixed;inset:0;background:rgba(2,8,23,.65);display:none;align-items:center;justify-content:center;z-index:9990}
+  .modal{background:#111a33;padding:16px;border-radius:12px;max-width:520px;width:calc(100% - 32px)}
+  .closeArea{text-align:right;margin-top:8px}
+  #mdClose{background:#283357;color:#fff;border:0;border-radius:10px;padding:8px 10px;cursor:pointer}
+  #flash{position:fixed;inset:0;background:#fff59d;opacity:0;pointer-events:none;transition:opacity .2s ease;}
 </style>
 </head>
 <body>
-<div class="flash" id="flash"></div>
-<div class="overlay" id="overlay" aria-hidden="true">
+<div id="flash"></div>
+<div id="overlay" aria-hidden="true">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mdTitle">
     <h3 id="mdTitle">알림</h3>
     <div id="mdBody">내용</div>
-    <div class="closeArea"><button class="closeBtn" id="mdClose" disabled>닫기(3초 후)</button></div>
+    <div class="closeArea"><button id="mdClose" disabled>닫기(3초 후)</button></div>
   </div>
 </div>
-
 <div class="wrap">
-  <h1>경찰 양성 v0.30</h1>
-
-  <!-- 신원 선택 -->
+  <h1>경찰 양성 <span class="tiny">(0.21 UI 유지·기능패치)</span></h1>
   <div class="panel" id="panelId">
     <h2>신원 선택</h2>
-    <div class="mut">선택하지 않은 항목은 무작위로 정합니다.</div>
-    <div class="grid2" style="margin:.6rem 0">
-      <div>
-        <div class="mut tiny">조직</div>
+    <div class="tiny">선택 안 하면 무작위로 정합니다.</div>
+    <div class="row">
+      <div class="panel">
+        <div class="tiny">조직</div>
         <div class="chips" id="orgChips">
           <button class="btn" data-org="경찰">경찰</button>
           <button class="btn" data-org="해양경찰">해양경찰</button>
         </div>
-      </div>
-      <div>
-        <div class="mut tiny">성별</div>
+        <div class="tiny" style="margin-top:8px">성별</div>
         <div class="chips" id="genderChips">
           <button class="btn" data-gender="남자">남자</button>
           <button class="btn" data-gender="여자">여자</button>
         </div>
-      </div>
-      <div>
-        <div class="mut tiny">시작 계급</div>
+        <div class="tiny" style="margin-top:8px">시작 계급</div>
         <div class="chips" id="rankChips">
           <button class="btn" data-rank="의경">의경</button>
           <button class="btn" data-rank="순경">순경</button>
           <button class="btn" data-rank="경위">경위</button>
         </div>
+        <div class="tiny" style="margin-top:8px">이름</div>
+        <input id="nameInput" class="btn" style="width:100%;text-align:left;font-weight:600" placeholder="예: 김수호 / 정세라"/>
+        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn" id="btnStart">시작</button>
+          <a class="btn" href="./index.html">메인</a>
+          <a class="btn" href="./honor_memorial.html">명예·추모관</a>
+          <button class="btn" id="btnQuit">의원면직</button>
+        </div>
       </div>
-      <div>
-        <div class="mut tiny">이름</div>
-        <input id="nameInput" class="btn" style="width:100%;text-align:left;font-weight:600"
-               placeholder="예: 김수호 / 정세라"/>
+      <div class="panel" id="panelGame" style="display:none">
+        <h2 id="titleInfo">—</h2>
+        <div class="stats">
+          <span class="tag" id="tagRank">—</span>
+          <span class="tag" id="tagHP">❤️ 50/50</span>
+          <span class="tag" id="tagMonth">근속 0개월</span>
+          <span class="tag" id="tagKit">구급함 0</span>
+        </div>
+        <div class="panel" style="background:#101a34">
+          <h3>적</h3>
+          <div class="stats"><span class="tag" id="enemyName">—</span><span class="tag" id="enemyHP">체력 —</span></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn" id="btnRoll">🎲 굴리기</button>
+            <button class="btn" id="btnBaton">삼단봉</button>
+            <button class="btn" id="btnFire">격발</button>
+            <button class="btn" id="btnSwap">무기변환</button>
+            <button class="btn" id="btnMed">❤️+30 (턴 소요)</button>
+            <button class="btn" id="btnClear" disabled>✅ 제압 완료!</button>
+          </div>
+        </div>
+        <div class="panel" id="panelAfter" style="display:none">
+          <h3>애프터</h3>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn" id="btnWash">씻고 출근</button>
+            <button class="btn" id="btnTryPromote">승진도전</button>
+            <button class="btn" id="btnUseKit">구급함 +1</button>
+          </div>
+          <div class="tiny">애프터가 열릴 때 +4개월, 진행 시에도 +4개월 (턴 토스트 표시)</div>
+        </div>
+        <div class="panel">
+          <h3>엔딩</h3>
+          <div id="ending">—</div>
+          <h3 style="margin-top:10px">이력</h3>
+          <ul id="history"></ul>
+        </div>
       </div>
-    </div>
-    <div class="footerBtns">
-      <button class="btn" id="btnStart">시작</button>
-      <a class="btn" href="./index.html?v=0.30">⬅️ 메인</a>
-      <a class="btn" href="./honor_memorial.html?v=0.30">명예·추모관</a>
-      <button class="btn" id="btnQuit">의원면직</button>
     </div>
   </div>
-
-  <!-- 전투/패널 -->
-  <div class="panel" id="panelGame" style="display:none">
-    <h2 id="titleInfo">—</h2>
-    <div class="stats">
-      <span class="tag" id="tagRank">—</span>
-      <span class="tag" id="tagHP">❤️ 50/50</span>
-      <span class="tag" id="tagMonth">근속 0개월</span>
-      <span class="tag" id="tagKit">구급함 0</span>
-    </div>
-
-    <div class="panel" style="background:#101a34">
-      <h3>적</h3>
-      <div class="stats"><span class="tag" id="enemyName">—</span><span class="tag" id="enemyHP">체력 —</span></div>
-      <div class="footerBtns">
-        <button class="btn" id="btnRoll">🎲 굴리기</button>
-        <button class="btn" id="btnBaton">삼단봉 (1)</button>
-        <button class="btn" id="btnFire">격발</button>
-        <button class="btn" id="btnSwap">무기변환</button>
-      </div>
-      <div class="grid2" style="margin-top:10px">
-        <button class="btn" id="btnMed">❤️+30 (턴 소요)</button>
-        <button class="btn" id="btnClear" disabled>✅ 제압 완료!</button>
-      </div>
-    </div>
-
-    <!-- 애프터 패널 -->
-    <div class="panel" id="panelAfter" style="display:none;margin-top:10px">
-      <h3>애프터</h3>
-      <div class="footerBtns">
-        <button class="btn" id="btnWash">씻고 출근</button>
-        <button class="btn" id="btnTryPromote">승진도전 (연차)</button>
-        <button class="btn" id="btnUseKit">구급함 사용</button>
-      </div>
-      <div class="tiny mut">* 애프터가 열릴 때 +4개월. v0.30부터 <b>매 턴 종료 토스트</b> 안내.</div>
-    </div>
-
-    <!-- 무기 상점 -->
-    <div class="panel" style="margin-top:10px">
-      <h3>무기 구매(영구)</h3>
-      <div class="chips">
-        <button class="btn" data-gun="22lr">22lr 권총 (10)</button>
-        <button class="btn" data-gun="9mm">9mm 권총 (20)</button>
-        <button class="btn" data-gun="shotgun">엽총 (35)</button>
-        <button class="btn" data-gun="taser">테이저건 (50)</button>
-      </div>
-    </div>
-
-    <!-- 엔딩/로그 -->
-    <div class="panel" style="margin-top:10px">
-      <h3>엔딩</h3>
-      <div id="ending">—</div>
-      <h3 style="margin-top:12px">이력</h3>
-      <ul id="history"></ul>
-    </div>
-  </div>
-
-  <div class="toastBox" id="toastBox" aria-live="polite"></div>
 </div>
-
-<script src="./app.js?v=0.30"></script>
+<div id="toastBox" aria-live="polite"></div>
+<script src="./app.js?v=0.30-lite"></script>
 </body>
 </html>
