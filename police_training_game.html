@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>경찰 양성 - 게임 v0.21 (패치)</title>
+<title>경찰 양성 - 게임 v0.30</title>
 <style>
   body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#0b1220;color:#e9f0ff}
   .wrap{max-width:1100px;margin:0 auto;padding:16px}
@@ -17,17 +17,21 @@
   .tag{background:#1c2745;padding:6px 8px;border-radius:10px}
   .grid2{display:grid;grid-template-columns:repeat(2,minmax(120px,1fr));gap:8px}
   .tiny{font-size:.85rem;opacity:.85}
+  /* 토스트 */
   #toastBox{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);display:flex;flex-direction:column;gap:8px;z-index:9999}
   .toast{background:#1b2441;color:#e9f0ff;padding:10px 14px;border-radius:12px;min-width:220px;text-align:center;box-shadow:0 6px 20px rgba(0,0,0,.35);transition:opacity .25s}
+  /* 모달/오버레이 */
   #overlay{position:fixed;inset:0;background:rgba(2,8,23,.65);display:none;align-items:center;justify-content:center;z-index:9990}
   .modal{background:#111a33;padding:16px;border-radius:12px;max-width:520px;width:calc(100% - 32px)}
   .closeArea{text-align:right;margin-top:8px}
   #mdClose{background:#283357;color:#fff;border:0;border-radius:10px;padding:8px 10px;cursor:pointer}
+  /* 섬광 (격발) — 0.2초 */
   #flash{position:fixed;inset:0;background:#fff59d;opacity:0;pointer-events:none;transition:opacity .2s ease;}
 </style>
 </head>
 <body>
 <div id="flash"></div>
+
 <div id="overlay" aria-hidden="true">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mdTitle">
     <h3 id="mdTitle">알림</h3>
@@ -35,8 +39,11 @@
     <div class="closeArea"><button id="mdClose" disabled>닫기(3초 후)</button></div>
   </div>
 </div>
+
 <div class="wrap">
-  <h1>경찰 양성 <span class="tiny">(0.21 UI 유지·기능패치)</span></h1>
+  <h1>경찰 양성 <span class="tiny">(v0.21 유지·기능패치)</span></h1>
+
+  <!-- 신원 선택 -->
   <div class="panel" id="panelId">
     <h2>신원 선택</h2>
     <div class="tiny">선택 안 하면 무작위로 정합니다.</div>
@@ -62,11 +69,13 @@
         <input id="nameInput" class="btn" style="width:100%;text-align:left;font-weight:600" placeholder="예: 김수호 / 정세라"/>
         <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
           <button class="btn" id="btnStart">시작</button>
-          <a class="btn" href="./index.html">메인</a>
-          <a class="btn" href="./honor_memorial.html">명예·추모관</a>
+          <a class="btn" href="./index.html?v=0.30">메인</a>
+          <a class="btn" href="./honor_memorial.html?v=0.30">명예·추모관</a>
           <button class="btn" id="btnQuit">의원면직</button>
         </div>
       </div>
+
+      <!-- 게임 패널(원본 흐름 유지) -->
       <div class="panel" id="panelGame" style="display:none">
         <h2 id="titleInfo">—</h2>
         <div class="stats">
@@ -75,6 +84,7 @@
           <span class="tag" id="tagMonth">근속 0개월</span>
           <span class="tag" id="tagKit">구급함 0</span>
         </div>
+
         <div class="panel" style="background:#101a34">
           <h3>적</h3>
           <div class="stats"><span class="tag" id="enemyName">—</span><span class="tag" id="enemyHP">체력 —</span></div>
@@ -87,6 +97,7 @@
             <button class="btn" id="btnClear" disabled>✅ 제압 완료!</button>
           </div>
         </div>
+
         <div class="panel" id="panelAfter" style="display:none">
           <h3>애프터</h3>
           <div style="display:flex;gap:8px;flex-wrap:wrap">
@@ -94,8 +105,9 @@
             <button class="btn" id="btnTryPromote">승진도전</button>
             <button class="btn" id="btnUseKit">구급함 +1</button>
           </div>
-          <div class="tiny">애프터가 열릴 때 +4개월, 진행 시에도 +4개월 (턴 토스트 표시)</div>
+          <div class="tiny">애프터가 열릴 때 +4개월 / 진행 시에도 +4개월. 매 턴 종료에 토스트 안내.</div>
         </div>
+
         <div class="panel">
           <h3>엔딩</h3>
           <div id="ending">—</div>
@@ -106,7 +118,8 @@
     </div>
   </div>
 </div>
+
 <div id="toastBox" aria-live="polite"></div>
-<script src="./app.js?v=0.30-lite"></script>
+<script src="./app.js?v=0.30"></script>
 </body>
 </html>
